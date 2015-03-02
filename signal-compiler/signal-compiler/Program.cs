@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace signalcompiler
 {
@@ -8,9 +11,22 @@ namespace signalcompiler
         {
             var LexAn = new LexAnalyzer(@"C:\Users\m3sc4\test.sg");
             string[] lines = LexAn.GetCodeFromFile();
-            foreach(var line in lines) {
-                Console.WriteLine(line);
+            LexAn.StartAnalyzing();
+            /*
+            string value = "\n\t \r\n";
+
+            foreach(var line in lines)
+            {
+                Console.WriteLine(line); 
             }
+            
+
+            byte[] asciiBytes = Encoding.ASCII.GetBytes(value);
+            foreach (var code in asciiBytes)
+            {
+                Console.Write(code + " ");
+            }
+            */
         }
 	}
 }

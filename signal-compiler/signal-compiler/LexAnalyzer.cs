@@ -8,7 +8,7 @@ namespace signalcompiler
     class LexAnalyzer
     {
         private string Name;
-
+        
         public LexAnalyzer(string FileName)
         {
             Name = FileName;
@@ -19,7 +19,19 @@ namespace signalcompiler
             return System.IO.File.ReadAllLines(Name);
         }
 
+        public void StartAnalyzing()
+        {
+            var code = GetCodeFromFile();
+
+            foreach (var line in code)
+            {
+                foreach(var symbol in line)
+                {
+                }
+
+            }
+
+        }
+
     }
-
-
 }
