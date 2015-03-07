@@ -7,21 +7,26 @@ namespace signalcompiler
 {
     public static class LangElements
     {
-        enum LangElementsTypes
+        public enum LangElementsTypes
         {
             Keywords,
             Whitespace,
             Delimiter,
             MultiDelimiter,
             CommentStart,
-            CommentEnd
+            Idintifier,
+            Error
         }
 
         public static IEnumerable<char> Whitespace;
+        public static IEnumerable<char> Delimiter;
+        public static IEnumerable<char> Letters;
+        public static IEnumerable<char> Digits;
         public static IEnumerable<string> Keywords;
         public static string CommentStart = "(*";
         public static string CommentEnd = "*)";
 
+        public static LangElementsTypes[] Attributes;
 
 
 
@@ -41,11 +46,38 @@ namespace signalcompiler
             {
                 "PROGRAM", "END", "BEGIN"
             };
+            Delimiter = new[]
+            {
+                '*',
+                '/',
+                ';'
+            };
+
         }      
             
+        public static void GenerateAttributes(char cur)
+        {
+
+        }
+
         
+        private static LangElementsTypes DetectAttribute(char cur)
+        {
+            if (Whitespace.Contains(cur))
+            {
+                return LangElementsTypes.Whitespace;
+            }
+            if (Delimiter.Contains(cur))
+            {
+                return LangElementsTypes.Delimiter;
+            }
 
 
+
+
+            return LangElementsTypes.Error;
+        }
+         
 
 
     }

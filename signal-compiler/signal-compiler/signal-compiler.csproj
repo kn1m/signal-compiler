@@ -34,6 +34,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Error.cs" />
     <Compile Include="LangElements.cs" />
     <Compile Include="LexAnalyzer.cs" />
     <Compile Include="LexTable.cs" />

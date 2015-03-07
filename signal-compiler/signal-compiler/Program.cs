@@ -13,14 +13,6 @@ namespace signalcompiler
             string[] lines = LexAn.GetCodeFromFile();
             LexAn.StartAnalyzing();
             /*
-            string value = "\n\t \r\n";
-
-            foreach(var line in lines)
-            {
-                Console.WriteLine(line); 
-            }
-            
-
             byte[] asciiBytes = Encoding.ASCII.GetBytes(value);
             foreach (var code in asciiBytes)
             {

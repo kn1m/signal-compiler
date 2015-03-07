@@ -12,11 +12,9 @@ namespace signalcompiler
         public const int KeywordsIndex = 401;
         public const int ConstantsIndex = 501;
         public const int IdentifiersIndex = 1001;
-        //public int CurrentIndex = 0;
 
         public LexTable()
         {
-
         }
 
         public int RegisterToken(string token, int CurrentIndex)
