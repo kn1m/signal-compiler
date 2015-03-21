@@ -8,20 +8,30 @@ namespace signalcompiler
     public class LexTable
     {
         private IDictionary<int, string> TokensTable;
-        public const int MultiDelimitersIndex = 301;
-        public const int KeywordsIndex = 401;
+        private int[] CodedTokens;
         public const int ConstantsIndex = 501;
         public const int IdentifiersIndex = 1001;
+        private int CurrentIndexConstants;
+        private int CurrentIndexIdentifiers;
 
         public LexTable()
         {
+            CurrentIndexConstants = ConstantsIndex;
+            CurrentIndexIdentifiers = IdentifiersIndex;
         }
 
-        public int RegisterToken(string token, int CurrentIndex)
+        public int RegisterConstant(string token)
         {
-            CurrentIndex++;
-            TokensTable.Add(CurrentIndex, token);
-            return CurrentIndex;
+            CurrentIndexConstants++;
+            TokensTable.Add(CurrentIndexConstants, token);
+            return CurrentIndexConstants;
+        }
+
+        public int RegisterIdentifier(string token)
+        {
+            CurrentIndexIdentifiers++;
+            TokensTable.Add(CurrentIndexIdentifiers, token);
+            return CurrentIndexIdentifiers;
         }
 
         public void PrintDictionary<T1, T2>(IDictionary<T1, T2> dict)
@@ -31,6 +41,7 @@ namespace signalcompiler
                 Console.WriteLine("{0}:{1}", p.Key, p.Value);
             }
         }
+
 
 
     }

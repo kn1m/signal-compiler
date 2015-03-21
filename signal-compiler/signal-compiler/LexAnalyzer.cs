@@ -9,7 +9,8 @@ namespace signalcompiler
     class LexAnalyzer
     {
         private string Name;
-        
+
+
         public LexAnalyzer(string FileName)
         {
             /*
@@ -41,20 +42,68 @@ namespace signalcompiler
 
         public void StartAnalyzing()
         {
-            var code = GetCodeFromFile();
-
-            foreach (var line in code)
+            var code = string.Join("", GetCodeFromFile());
+            var Table = new LexTable();
+            List<string> LineTokens = new List<string>();
+            
+            //Console.WriteLine(line);
+            int i = 0;
+            while (i < code.Length)
             {
-
-                foreach(var symbol in line)
+                char symbol = code[i];
+                var Attributes = LangElements.Attributes[symbol];
+                string PossibleToken = "";
+                switch (Attributes)
                 {
-                    
+                    case LangElements.LangElementsTypes.Letters:
+                        while (i < code.Length 
+                            && (LangElements.Attributes[code[i]]
+                                    == LangElements.LangElementsTypes.Letters 
+                                || LangElements.Attributes[code[i]] 
+                                    == LangElements.LangElementsTypes.Digits ) )
+                        {
+
+                            PossibleToken += code[i];
+                            i++;
+                        }
+
+
+                        break;
+                    case LangElements.LangElementsTypes.Digits:
+                        
+                        while (i < code.Length && LangElements.Attributes[code[i]]
+                            == LangElements.LangElementsTypes.Digits)
+                        {
+
+                            PossibleToken += code[i];
+                            i++;
+                        }
+                        break;
+
+                    case LangElements.LangElementsTypes.Delimiter:
+
+                        break;
+                    case LangElements.LangElementsTypes.Whitespace:
+
+                        break;
+
                 }
-
-
+                LineTokens.Add(PossibleToken);
+  
+                i++;
             }
 
+            int z = 0;
+            foreach (var Token in LineTokens)
+            {
+
+                Console.WriteLine("Token {0}: {1}", z, Token);
+                i++;
+            }
+
+
         }
+
 
         public void PrintResults()
         {

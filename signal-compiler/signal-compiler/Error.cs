@@ -9,6 +9,7 @@ namespace signalcompiler
     {
         public string CodeLine { get; set; }
         public int CodeLineNumber { get; set; }
+        public int CodeColumnNumber { get; set; }
         public string CodeErrorType { get; set; }
     }
 }

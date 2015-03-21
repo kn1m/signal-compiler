@@ -15,6 +15,8 @@ namespace signalcompiler
             MultiDelimiter,
             CommentStart,
             Idintifier,
+            Letters,
+            Digits,
             Error
         }
 
@@ -52,12 +54,19 @@ namespace signalcompiler
                 '/',
                 ';'
             };
+            Letters = GenCharEnumerable('A', 'Z');
+            Digits = GenCharEnumerable('0', '9');
 
+            GenerateAttributes();
         }      
             
-        public static void GenerateAttributes(char cur)
+        public static void GenerateAttributes()
         {
-
+            Attributes = new LangElementsTypes[255];
+            for (int i = 0; i < 255; i++)
+            {
+                Attributes[i] = DetectAttribute((char)i);
+            }
         }
 
         
@@ -71,13 +80,25 @@ namespace signalcompiler
             {
                 return LangElementsTypes.Delimiter;
             }
+            if (Digits.Contains(cur))
+            {
+                return LangElementsTypes.Digits;
+            }
+            if (Letters.Contains(cur))
+            {
+                return LangElementsTypes.Letters;
+            }
 
 
 
 
             return LangElementsTypes.Error;
         }
-         
+
+        private static IEnumerable<char> GenCharEnumerable(char start, char fin)
+        {
+            return Enumerable.Range(start, (fin - start) + 1).Select(c => (char)c);
+        }
 
 
     }
