@@ -7,8 +7,8 @@ namespace signalcompiler
 {
     public class LexTable
     {
-        private IDictionary<int, string> TokensTable;
-        private int[] CodedTokens;
+        private IDictionary<int, string> TokensTable = new SortedDictionary<int, string>();
+        private int[] CodedTokens { get; set; }
         public const int ConstantsIndex = 501;
         public const int IdentifiersIndex = 1001;
         private int CurrentIndexConstants;
@@ -42,7 +42,10 @@ namespace signalcompiler
             }
         }
 
-
+        public void PrintTable()
+        {
+            PrintDictionary(TokensTable);
+        }
 
     }
 }

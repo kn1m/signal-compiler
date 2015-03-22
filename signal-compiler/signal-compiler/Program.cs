@@ -10,7 +10,6 @@ namespace signalcompiler
         public static void Main(string[] args)
         {
             var LexAn = new LexAnalyzer(@"C:\Users\m3sc4\test.sg");
-            string[] lines = LexAn.GetCodeFromFile();
             LexAn.StartAnalyzing();
             /*
             byte[] asciiBytes = Encoding.ASCII.GetBytes(value);

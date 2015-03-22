@@ -37,22 +37,27 @@ namespace signalcompiler
         {
             Whitespace = new[]
             {
+                /*
                 '\x9', //horizontal tab
                 '\xA', //LF
                 '\xB', //vertical tab
                 '\xC', //new page
                 '\xD', //CR
                 '\x20' //space
+                 */
+                '\r',
+                '\t',
+                '\n'
+
+
             };
             Keywords = new[] 
             {
-                "PROGRAM", "END", "BEGIN"
+                "PROGRAM", "END", "BEGIN", "DEFFUNC"
             };
             Delimiter = new[]
             {
-                '*',
-                '/',
-                ';'
+                '\x3B'
             };
             Letters = GenCharEnumerable('A', 'Z');
             Digits = GenCharEnumerable('0', '9');
@@ -69,13 +74,21 @@ namespace signalcompiler
             }
         }
 
+        public static bool CheckKeyword(string PossibleKeyword)
+        {
+            if(Keywords.Contains(PossibleKeyword))
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+
         
         private static LangElementsTypes DetectAttribute(char cur)
         {
-            if (Whitespace.Contains(cur))
-            {
-                return LangElementsTypes.Whitespace;
-            }
+
             if (Delimiter.Contains(cur))
             {
                 return LangElementsTypes.Delimiter;
@@ -88,9 +101,15 @@ namespace signalcompiler
             {
                 return LangElementsTypes.Letters;
             }
+            if (Whitespace.Contains(cur))
+            {
+                return LangElementsTypes.Whitespace;
+            }
 
-
-
+            if (cur == CommentStart[0])
+            {
+                return LangElementsTypes.CommentStart;
+            }
 
             return LangElementsTypes.Error;
         }

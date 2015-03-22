@@ -9,11 +9,11 @@ namespace signalcompiler
     class LexAnalyzer
     {
         private string Name;
-
+         
+        private List<int>  CodedTokens = new List<int>();
 
         public LexAnalyzer(string FileName)
         {
-            /*
             if (System.IO.File.Exists(FileName))
             {
                 Name = FileName;
@@ -21,32 +21,21 @@ namespace signalcompiler
             else
             {
                 throw new FileNotFoundException();
-            }*/
-            try
-            {
-                if (System.IO.File.Exists(FileName))
-                {
-                    Name = FileName;
-                }
-            }
-            catch
-            {
-                throw new FileNotFoundException();
             }
         }
 
-        public string[] GetCodeFromFile()
+        public string GetCodeFromFile()
         {
-            return System.IO.File.ReadAllLines(Name);
+            return System.IO.File.ReadAllText(Name);
         }
 
         public void StartAnalyzing()
         {
-            var code = string.Join("", GetCodeFromFile());
+            var code = GetCodeFromFile();
             var Table = new LexTable();
             List<string> LineTokens = new List<string>();
             
-            //Console.WriteLine(line);
+
             int i = 0;
             while (i < code.Length)
             {
@@ -55,52 +44,98 @@ namespace signalcompiler
                 string PossibleToken = "";
                 switch (Attributes)
                 {
+
                     case LangElements.LangElementsTypes.Letters:
-                        while (i < code.Length 
-                            && (LangElements.Attributes[code[i]]
+
+                        int j = i;
+                        while (j < code.Length
+                            && (LangElements.Attributes[code[j]]
                                     == LangElements.LangElementsTypes.Letters 
-                                || LangElements.Attributes[code[i]] 
+                                || LangElements.Attributes[code[j]] 
                                     == LangElements.LangElementsTypes.Digits ) )
                         {
-
-                            PossibleToken += code[i];
-                            i++;
+                            PossibleToken += code[j];
+                            j++;
                         }
 
+                        i = j - 1;
+
+                        LineTokens.Add(PossibleToken);
+
+                        if (!LangElements.CheckKeyword(PossibleToken))
+                        {
+                            CodedTokens.Add(Table.RegisterIdentifier(PossibleToken));
+                        }
 
                         break;
+
                     case LangElements.LangElementsTypes.Digits:
-                        
-                        while (i < code.Length && LangElements.Attributes[code[i]]
+
+                        j = i;
+                        while (i < code.Length && LangElements.Attributes[code[j]]
                             == LangElements.LangElementsTypes.Digits)
                         {
-
-                            PossibleToken += code[i];
-                            i++;
+                            PossibleToken += code[j];
+                            j++;
                         }
+
+                        i = j - 1;
+
+                        LineTokens.Add(PossibleToken);
+
                         break;
 
                     case LangElements.LangElementsTypes.Delimiter:
+                        
+                        PossibleToken += code[i];
 
+                        LineTokens.Add(PossibleToken);
                         break;
+
                     case LangElements.LangElementsTypes.Whitespace:
 
                         break;
 
+                    case LangElements.LangElementsTypes.CommentStart:
+
+                        i++;
+                        if (code[i] != LangElements.CommentStart[1])
+                        {
+
+                        }
+
+
+                        j = i;
+                        while (j < code.Length
+                            && (LangElements.Attributes[code[j]]
+                                    == LangElements.LangElementsTypes.Letters 
+                                || LangElements.Attributes[code[j]] 
+                                    == LangElements.LangElementsTypes.Digits ) )
+                        {
+                            PossibleToken += code[j];
+                            j++;
+                        }
+
+                        i = j - 1;
+
+                        break;
+
+                    
                 }
-                LineTokens.Add(PossibleToken);
-  
                 i++;
+
+                
             }
 
+            Table.GetRes();
+            Console.WriteLine();
             int z = 0;
             foreach (var Token in LineTokens)
             {
-
                 Console.WriteLine("Token {0}: {1}", z, Token);
-                i++;
+                z++;
             }
-
+            
 
         }
 
