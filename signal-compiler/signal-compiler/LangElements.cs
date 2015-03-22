@@ -9,12 +9,9 @@ namespace signalcompiler
     {
         public enum LangElementsTypes
         {
-            Keywords,
             Whitespace,
             Delimiter,
-            MultiDelimiter,
             CommentStart,
-            Idintifier,
             Letters,
             Digits,
             Error
@@ -27,37 +24,31 @@ namespace signalcompiler
         public static IEnumerable<string> Keywords;
         public static string CommentStart = "(*";
         public static string CommentEnd = "*)";
-
         public static LangElementsTypes[] Attributes;
-
-
-
 
         static LangElements()
         {
             Whitespace = new[]
             {
-                /*
                 '\x9', //horizontal tab
                 '\xA', //LF
                 '\xB', //vertical tab
                 '\xC', //new page
                 '\xD', //CR
                 '\x20' //space
-                 */
-                '\r',
-                '\t',
-                '\n'
-
-
             };
             Keywords = new[] 
             {
-                "PROGRAM", "END", "BEGIN", "DEFFUNC"
+                "PROGRAM",
+                "END",
+                "BEGIN",
+                "DEFFUNC"
             };
             Delimiter = new[]
             {
-                '\x3B'
+                ';',
+                '/',
+                ','
             };
             Letters = GenCharEnumerable('A', 'Z');
             Digits = GenCharEnumerable('0', '9');
@@ -83,9 +74,6 @@ namespace signalcompiler
             return false;
         }
 
-
-
-        
         private static LangElementsTypes DetectAttribute(char cur)
         {
 
