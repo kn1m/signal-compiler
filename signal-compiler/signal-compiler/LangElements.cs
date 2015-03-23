@@ -47,8 +47,9 @@ namespace signalcompiler
             Delimiter = new[]
             {
                 ';',
-                '/',
-                ','
+                '\\',
+                ',',
+                '='
             };
             Letters = GenCharEnumerable('A', 'Z');
             Digits = GenCharEnumerable('0', '9');
