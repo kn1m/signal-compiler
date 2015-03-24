@@ -9,15 +9,58 @@ namespace signalcompiler
     {
         private IDictionary<int, string> TokensTable = new SortedDictionary<int, string>();
         private int[] CodedTokens { get; set; }
+        public const int KeywordIndex = 401;
         public const int ConstantsIndex = 501;
         public const int IdentifiersIndex = 1001;
         private int CurrentIndexConstants;
         private int CurrentIndexIdentifiers;
+        private int CurrentKeywordIndex;
 
         public LexTable()
         {
+            CurrentKeywordIndex = KeywordIndex;
             CurrentIndexConstants = ConstantsIndex;
             CurrentIndexIdentifiers = IdentifiersIndex;
+            foreach (var Keyword in LangElements.Keywords)
+            {
+                TokensTable.Add(CurrentKeywordIndex, Keyword);
+                CurrentKeywordIndex++;
+            }
+
+            foreach (var Whitespace in LangElements.Whitespace)
+            {
+                string Symbol = "";
+                Symbol += Whitespace; 
+                TokensTable.Add((int)Symbol[0], Symbol);
+            }
+
+            foreach (var Delimiter in LangElements.Delimiter)
+            {
+                string Symbol = "";
+                Symbol += Delimiter;
+                TokensTable.Add((int)Symbol[0], Symbol);
+            }
+
+            foreach (var Letter in LangElements.Letters)
+            {
+                string Symbol = "";
+                Symbol += Letter;
+                TokensTable.Add((int)Symbol[0], Symbol);
+            }
+
+            foreach (var Digit in LangElements.Digits)
+            {
+                string Symbol = "";
+                Symbol += Digit;
+                TokensTable.Add((int)Symbol[0], Symbol);
+            }
+
+            foreach (var Additional in LangElements.Additional)
+            {
+                string Symbol = "";
+                Symbol += Additional;
+                TokensTable.Add((int)Symbol[0], Symbol);
+            }
         }
 
         public int RegisterConstant(string token)
@@ -47,5 +90,9 @@ namespace signalcompiler
             PrintDictionary(TokensTable);
         }
 
+        public IDictionary<int, string> GetTokensTable()
+        {
+            return TokensTable;
+        }
     }
 }

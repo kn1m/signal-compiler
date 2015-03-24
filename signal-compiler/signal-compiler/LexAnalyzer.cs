@@ -64,7 +64,19 @@ namespace signalcompiler
 
                         if (!LangElements.CheckKeyword(PossibleToken))
                         {
-                            CodedTokens.Add(Table.RegisterIdentifier(PossibleToken));
+                            bool AlreadyRegistered = false;
+                            foreach (var TableToken in Table.GetTokensTable())
+                            {
+                                if (TableToken.Value == PossibleToken)
+                                {
+                                    AlreadyRegistered = true;
+                                    break;
+                                }
+                            }
+                            if (!AlreadyRegistered)
+                            {
+                                CodedTokens.Add(Table.RegisterIdentifier(PossibleToken));
+                            }
                         }
 
                         break;
@@ -107,7 +119,7 @@ namespace signalcompiler
                         j = i;
                         while (j < code.Length && Comment)
                         {
-                            if (code[j] == LangElements.CommentEnd[1] && code[j - 1] == LangElements.CommentEnd[0] && j > i + 1)//&& GlobalCommentState)
+                            if (code[j] == LangElements.CommentEnd[1] && code[j - 1] == LangElements.CommentEnd[0] && j > i + 1)
                             {
                                 Comment = false;
                             }
@@ -118,7 +130,6 @@ namespace signalcompiler
 
                         if ( i == code.Length - 1 && Comment)
                         {
-                            //Console.WriteLine("Comment uncloded"); // Error generate
                             Errors.Add(ErrorGenerate(CommentStartPosition, "Unclosed comment"));
                         }
                         break;
@@ -173,7 +184,6 @@ namespace signalcompiler
             };
         }
 
-
         public void PrintResults()
         {
             Table.PrintTable();
@@ -193,8 +203,12 @@ namespace signalcompiler
                     currentError.CodeColumnNumber,
                     currentError.CodeErrorType);
             }
-            
+            Console.WriteLine();
+            foreach (var Token in CodedTokens)
+            {
+                Console.Write("{0} ", Token);
+                z++;
+            }
         }
-
     }
 }

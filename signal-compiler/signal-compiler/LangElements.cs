@@ -14,13 +14,15 @@ namespace signalcompiler
             CommentStart,
             Letters,
             Digits,
-            Error
+            Error,
+            Additional
         }
 
         public static IEnumerable<char> Whitespace;
         public static IEnumerable<char> Delimiter;
         public static IEnumerable<char> Letters;
         public static IEnumerable<char> Digits;
+        public static IEnumerable<char> Additional;
         public static IEnumerable<string> Keywords;
         public static string CommentStart = "(*";
         public static string CommentEnd = "*)";
@@ -50,6 +52,12 @@ namespace signalcompiler
                 '\\',
                 ',',
                 '='
+            };
+            Additional = new[]
+            {
+                '*',
+                ')',
+                '('
             };
             Letters = GenCharEnumerable('A', 'Z');
             Digits = GenCharEnumerable('0', '9');
@@ -107,7 +115,5 @@ namespace signalcompiler
         {
             return Enumerable.Range(start, (fin - start) + 1).Select(c => (char)c);
         }
-
-
     }
 }
