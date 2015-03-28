@@ -184,6 +184,21 @@ namespace signalcompiler
             };
         }
 
+        public List<int> GetCodedTokens()
+        {
+            return CodedTokens;
+        }
+
+        public List<Error> GetErrorList()
+        {
+            return Errors;
+        }
+
+        public IDictionary<int, string> GetTokensTable()
+        {
+            return Table.GetTokensTable();
+        }
+
         public void PrintResults()
         {
             Table.PrintTable();
@@ -198,7 +213,7 @@ namespace signalcompiler
             Console.WriteLine();
             foreach(var currentError in Errors)
             {
-                Console.WriteLine("{0}, {1} : {2}", 
+                Console.WriteLine("Line: {0}, Column: {1} : {2}", 
                     currentError.CodeLineNumber,
                     currentError.CodeColumnNumber,
                     currentError.CodeErrorType);
@@ -206,8 +221,7 @@ namespace signalcompiler
             Console.WriteLine();
             foreach (var Token in CodedTokens)
             {
-                Console.Write("{0} ", Token);
-                z++;
+                Console.WriteLine("{0} ", Token);
             }
         }
     }
