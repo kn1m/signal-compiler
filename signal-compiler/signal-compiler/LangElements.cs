@@ -51,7 +51,8 @@ namespace signalcompiler
                 ';',
                 '\\',
                 ',',
-                '='
+                '=',
+                '.'
             };
             Additional = new[]
             {

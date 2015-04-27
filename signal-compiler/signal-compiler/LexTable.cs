@@ -7,7 +7,7 @@ namespace signalcompiler
 {
     public class LexTable
     {
-        private IDictionary<int, string> TokensTable = new SortedDictionary<int, string>();
+        public IDictionary<int, string> TokensTable { get; private set; }//= new SortedDictionary<int, string>();
         private int[] CodedTokens { get; set; }
         public const int KeywordIndex = 401;
         public const int ConstantsIndex = 501;
@@ -18,6 +18,7 @@ namespace signalcompiler
 
         public LexTable()
         {
+            TokensTable = new SortedDictionary<int, string>();
             CurrentKeywordIndex = KeywordIndex;
             CurrentIndexConstants = ConstantsIndex;
             CurrentIndexIdentifiers = IdentifiersIndex;
@@ -77,12 +78,58 @@ namespace signalcompiler
             return CurrentIndexIdentifiers;
         }
 
+        public bool isIdentifier(int LexemId)
+        {
+            if (LexemId > 1000)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool isConstant(int LexemId)
+        {
+            if ( (LexemId > 500 && LexemId <= 1000) || (LexemId >= 48 && LexemId < 58))
+            {
+                return true;
+            }
+            return false;
+        }
+
+
         public void PrintDictionary<T1, T2>(IDictionary<T1, T2> dict)
         {
             foreach (var p in dict)
             {
-                Console.WriteLine("{0}:{1}", p.Key, p.Value);
+                Console.WriteLine("{0}:{1} ", p.Key, p.Value);
             }
+        }
+
+        public int GetTokenId(string token)
+        {
+            foreach (var p in TokensTable)
+            {
+                if(p.Value == token)
+                {
+                    return p.Key;
+                }
+            }
+            return 0;
+        }
+
+        public string GetToken(int Code)
+        {
+            //string Token = null;
+            foreach (var p in TokensTable)
+            {
+                if (p.Key == Code)
+                {
+                    //if(Code <= 48 || Code >= 58)
+                        return p.Value;
+                    //Token = p.Value;
+                }
+            }
+            return null;// Token;
         }
 
         public void PrintTable()

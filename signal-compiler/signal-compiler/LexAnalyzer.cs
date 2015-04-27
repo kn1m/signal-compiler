@@ -13,6 +13,9 @@ namespace signalcompiler
         private List<string> LineTokens = new List<string>();
         private List<Error> Errors = new List<Error>();
         private LexTable Table = new LexTable();
+
+        private List<Lexem> Lexems = new List<Lexem>();//??
+
         private string code;
 
         public LexAnalyzer(string FileName)
@@ -48,6 +51,9 @@ namespace signalcompiler
                     case LangElements.LangElementsTypes.Letters:
 
                         int j = i;
+
+                        var Position = GenerateLexemPosition(i);
+
                         while (j < code.Length
                             && (LangElements.Attributes[code[j]] 
                             == LangElements.LangElementsTypes.Letters ||
@@ -58,9 +64,14 @@ namespace signalcompiler
                             j++;
                         }
 
+
+
+
                         i = j - 1;
 
                         LineTokens.Add(PossibleToken);
+
+
 
                         if (!LangElements.CheckKeyword(PossibleToken))
                         {
@@ -70,6 +81,7 @@ namespace signalcompiler
                                 if (TableToken.Value == PossibleToken)
                                 {
                                     AlreadyRegistered = true;
+                                    CodedTokens.Add(Table.GetTokenId(PossibleToken));
                                     break;
                                 }
                             }
@@ -78,12 +90,25 @@ namespace signalcompiler
                                 CodedTokens.Add(Table.RegisterIdentifier(PossibleToken));
                             }
                         }
+                        else
+                        {
+                            CodedTokens.Add(Table.GetTokenId(PossibleToken));
+                        }
+
+                        Lexems.Add(new Lexem
+                        {
+                            LexemId = Table.GetTokenId(PossibleToken),
+                            LexemPosition = Position
+                        });
 
                         break;
 
                     case LangElements.LangElementsTypes.Digits:
 
                         j = i;
+
+                        Position = GenerateLexemPosition(i);
+
                         while (j < code.Length && LangElements.Attributes[code[j]]
                             == LangElements.LangElementsTypes.Digits)
                         {
@@ -97,11 +122,24 @@ namespace signalcompiler
 
                         CodedTokens.Add(Table.RegisterConstant(PossibleToken));
 
+                        Lexems.Add(new Lexem
+                        {
+                            LexemId = Table.GetTokenId(PossibleToken),
+                            LexemPosition = Position
+                        });
+
                         break;
 
-                    case LangElements.LangElementsTypes.Delimiter:                    
+                    case LangElements.LangElementsTypes.Delimiter:
+                        Position = GenerateLexemPosition(i);
                         PossibleToken += code[i];
+                        CodedTokens.Add(Table.GetTokenId(PossibleToken));
                         LineTokens.Add(PossibleToken);
+                        Lexems.Add(new Lexem
+                        {
+                            LexemId = Table.GetTokenId(PossibleToken),
+                            LexemPosition = Position
+                        });
                         break;
 
                     case LangElements.LangElementsTypes.Whitespace:
@@ -184,6 +222,32 @@ namespace signalcompiler
             };
         }
 
+        private Lexem.Position GenerateLexemPosition(int Position)
+        {
+
+            int i = 0, k = 0;
+            int j = 1;
+
+            while (i < Position)
+            {
+                if (code[i] == '\n')
+                {
+                    j++;
+                    k = 0;
+                }
+                i++;
+                k++;
+            }
+
+            return new Lexem.Position
+            {
+                Line = j,
+                Column = k
+            };            
+        }
+
+
+
         public List<int> GetCodedTokens()
         {
             return CodedTokens;
@@ -194,22 +258,29 @@ namespace signalcompiler
             return Errors;
         }
 
-        public IDictionary<int, string> GetTokensTable()
+        public LexTable GetTokensTable()
         {
-            return Table.GetTokensTable();
+            return Table;
+        }
+
+
+        public List<Lexem> GetLexemList()
+        {
+            return Lexems;
+        }
+
+        public List<string> GetLineTokens()
+        {
+            return LineTokens;
         }
 
         public void PrintResults()
         {
             Table.PrintTable();
             Console.WriteLine();
-            int z = 0;
-            foreach (var Token in LineTokens)
-            {
-                Console.WriteLine("Token {0}: {1}", z, Token);
-                z++;
-            }
 
+
+            
             Console.WriteLine();
             foreach(var currentError in Errors)
             {
@@ -221,8 +292,16 @@ namespace signalcompiler
             Console.WriteLine();
             foreach (var Token in CodedTokens)
             {
-                Console.WriteLine("{0} ", Token);
+                Console.Write("{0} ", Token);
             }
+            Console.WriteLine();
+            /*
+            foreach (var Token in Lexems)
+            {
+                Console.WriteLine(Token.ToString());
+            }*/
+
+            Console.WriteLine();
         }
     }
 }

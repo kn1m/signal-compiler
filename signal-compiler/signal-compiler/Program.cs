@@ -13,9 +13,29 @@ namespace signalcompiler
             Console.WriteLine("Lexecial Analyzer: ");
             LexAn.StartAnalyzing();
             LexAn.PrintResults();
+            var SyntaxAn = new SyntaxAnalyzer(LexAn.GetLexemList(),
+                                              LexAn.GetTokensTable(),
+                                              LexAn.GetErrorList());
+
             Console.WriteLine("Syntax Analyzer: ");
-            var SyntaxAn = new SyntaxAnalyzer(LexAn.GetCodedTokens(), LexAn.GetTokensTable(), LexAn.GetErrorList());
-            SyntaxAn.PrintResult();
+
+            var ParsingTree = SyntaxAn.Parser();
+            if (ParsingTree != null)
+            {
+                string TextTree = "Parsing tree: " + ParsingTree.Root.ToString() + "\n";
+                System.IO.File.WriteAllText(@"C:\Users\m3sc4\Tree.txt", TextTree);
+                Console.WriteLine(TextTree);
+                //Console.Write("Parsing tree: " + ParsingTree.Root.ToString() + "\n");
+            }
+            if(SyntaxAn.GetErrors() != null)
+            {
+                var Errors = SyntaxAn.GetErrors();
+                foreach(var Error in Errors)
+                {
+                    Console.WriteLine(Error.ToString());
+                }
+            }
         }
 	}
+
 }
