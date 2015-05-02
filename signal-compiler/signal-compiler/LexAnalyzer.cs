@@ -13,14 +13,12 @@ namespace signalcompiler
         private List<string> LineTokens = new List<string>();
         private List<Error> Errors = new List<Error>();
         private LexTable Table = new LexTable();
-
-        private List<Lexem> Lexems = new List<Lexem>();//??
-
+        private List<Lexem> Lexems = new List<Lexem>();
         private string code;
 
         public LexAnalyzer(string FileName)
         {
-            if (System.IO.File.Exists(FileName))
+            if(System.IO.File.Exists(FileName))
             {
                 Name = FileName;
             }
