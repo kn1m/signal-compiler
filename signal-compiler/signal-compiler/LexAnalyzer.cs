@@ -62,14 +62,9 @@ namespace signalcompiler
                             j++;
                         }
 
-
-
-
                         i = j - 1;
 
                         LineTokens.Add(PossibleToken);
-
-
 
                         if (!LangElements.CheckKeyword(PossibleToken))
                         {

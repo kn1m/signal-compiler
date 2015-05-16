@@ -25,7 +25,6 @@ namespace signalcompiler
                 string TextTree = "Parsing tree: " + ParsingTree.Root.ToString() + "\n";
                 System.IO.File.WriteAllText(@"C:\Users\m3sc4\Tree.txt", TextTree);
                 Console.WriteLine(TextTree);
-                //Console.Write("Parsing tree: " + ParsingTree.Root.ToString() + "\n");
             }
             if(SyntaxAn.GetErrors() != null)
             {
@@ -35,6 +34,13 @@ namespace signalcompiler
                     Console.WriteLine(Error.ToString());
                 }
             }
+
+            Console.WriteLine("Code generator: ");
+
+            var CodeGenerator = new CodeGenerator(ParsingTree, "GeneratedCode.asm");
+            CodeGenerator.GenerateCode();
+
+
         }
 	}
 
