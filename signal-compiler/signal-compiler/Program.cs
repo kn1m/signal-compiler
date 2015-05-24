@@ -37,7 +37,7 @@ namespace signalcompiler
 
             Console.WriteLine("Code generator: ");
 
-            var CodeGenerator = new CodeGenerator(ParsingTree, "GeneratedCode.asm");
+            var CodeGenerator = new CodeGenerator(ParsingTree, "GeneratedCode.asm", SyntaxAn.GetConstants());
             CodeGenerator.GenerateCode();
 
 

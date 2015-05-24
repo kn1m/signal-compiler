@@ -5,7 +5,7 @@ using System.Text;
 
 namespace signalcompiler
 {
-    class Error
+    public class Error
     {
         public int CodeLineNumber { get; set; }
         public int CodeColumnNumber { get; set; }

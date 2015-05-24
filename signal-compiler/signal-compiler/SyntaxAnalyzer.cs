@@ -14,6 +14,7 @@ namespace signalcompiler
         private Tree.Node CurrentNode;
         private List<int> AlreadyPassedIdentifier = new List<int>();
         private int StackCount = 0;
+        private List<Constant> Constants = new List<Constant>();
 
         public SyntaxAnalyzer(List<Lexem> LexemList, LexTable Table,  List<Error> ErrorList)
         {
@@ -256,6 +257,15 @@ namespace signalcompiler
         {
             if (TokensTable.isConstant(CurrentLexem.LexemId))
             {
+                Constants.Add(new Constant
+                {
+                    Value = Convert.ToInt32(TokensTable.GetToken(CurrentLexem.LexemId)),
+                    LexemPosition = new Constant.Position
+                    {
+                        Line = CurrentLexem.LexemPosition.Line,
+                        Column = CurrentLexem.LexemPosition.Column
+                    }
+                });
                 return new Tree.Node
                 {
                     LexemType = "Constant",
@@ -370,6 +380,11 @@ namespace signalcompiler
         public List<Error> GetErrors()
         {   
             return Errors;
+        }
+
+        public List<Constant> GetConstants()
+        {
+            return Constants;
         }
     }
 }
