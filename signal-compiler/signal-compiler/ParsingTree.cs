@@ -22,9 +22,9 @@ namespace signalcompiler
                     {
                         childrenStrBuilder.AppendFormat("{0} ", child);
                     }
-                    return string.Format("({0} {1} {2})", LexemType, Value, childrenStrBuilder);
+                    return string.Format("[{0} {1} {2}]", LexemType, Value, childrenStrBuilder);
                 }
-                return string.Format("({0} {1})", LexemType, Value);
+                return string.Format("[{0} {1}]", LexemType, Value);
             }
         }
     }
